@@ -67,7 +67,7 @@ $.leftView.addEventListener('postlayout', () => {
             height : Ti.UI.SIZE,
             backgroundSelectedColor : 'transparent',
             backgroundColor: 'transparent',
-            top : 10,
+            top : (Ti.Platform.name === "android" ? 10 : undefined),
             bottom : 16
         });
 
@@ -112,13 +112,15 @@ $.leftView.addEventListener('postlayout', () => {
             });
             
             var teamName = Ti.UI.createLabel({
+                top: (Ti.Platform.name === "android" ? 0 : 10),
                 font : {
                     fontSize : 20,
                     fontFamily : 'Roboto-Regular'
                 },
                 color : 'rgba(0, 0, 0, 0.87)',
                 text : teams[cellIndex].name,
-                touchEnabled : false
+                touchEnabled : true,
+                teamID : teams[cellIndex].name + cellIndex.toString()
             });
 
             nameView.add(teamName);
