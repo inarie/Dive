@@ -1,0 +1,16 @@
+<Alloy>
+	<Window>
+		<View id="leftView">
+			<View id="leftTopView">
+				<Label id="title">I've seen</Label>
+			</View>
+			<View id="leftBottomView">
+				<TableView id="grid" onClick="gridOnClick"></TableView>
+				<Button id="nextBtn"></Button>
+			</View>
+		</View>
+		<View id="rightView">"
+			<ImageView image="https://miro.medium.com/max/666/1*szJxKw57OEk_7S48u1X_Rw.gif"></ImageView>
+		</View>
+	</Window>
+</Alloy>
