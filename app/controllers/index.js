@@ -56,9 +56,19 @@ $.leftView.addEventListener('postlayout', () => {
         var row = Ti.UI.createTableViewRow({
             className : 'grid',
             layout : 'horizontal',
-            height : cellWidthAndHeight + horizontalPadding,
+            height : cellWidthAndHeight,
             backgroundSelectedColor : 'transparent',
             backgroundColor: 'transparent'
+        });
+
+        var nameRow = Ti.UI.createTableViewRow({
+            className : 'grid',
+            layout : 'horizontal',
+            height : Ti.UI.SIZE,
+            backgroundSelectedColor : 'transparent',
+            backgroundColor: 'transparent',
+            top : 10,
+            bottom : 16
         });
 
         for (var x = 0; x < xGrid; x++){
@@ -78,7 +88,7 @@ $.leftView.addEventListener('postlayout', () => {
                 height : cellWidthAndHeight,
                 width : cellWidthAndHeight,
                 borderRadius : 4,
-                borderWidth : 0
+                borderWidth: 0
             });
 
             var teamLogoSaturation = Ti.UI.createLabel({
@@ -89,9 +99,19 @@ $.leftView.addEventListener('postlayout', () => {
                 backgroundColor: 'rgba(255, 255, 255, 0.5)',
                 teamID : teams[cellIndex].name + cellIndex.toString(),
             });
+
+            view.add(teamLogo);
+            view.add(teamLogoSaturation);
+            row.add(view);
+
+            var nameView = Ti.UI.createView({
+                left : verticalPadding,
+                right : verticalPadding,
+                height : Ti.UI.SIZE,
+                width : cellWidthAndHeight
+            });
             
             var teamName = Ti.UI.createLabel({
-                bottom : -40,
                 font : {
                     fontSize : 20,
                     fontFamily : 'Roboto-Regular'
@@ -101,14 +121,13 @@ $.leftView.addEventListener('postlayout', () => {
                 touchEnabled : false
             });
 
-            view.add(teamLogo);
-            view.add(teamLogoSaturation);
-            view.add(teamName);
-            row.add(view);
-
+            nameView.add(teamName);
+            nameRow.add(nameView);
+            
             cellIndex++;
         }
         tableData.push(row);
+        tableData.push(nameRow);
     }
 
     $.grid.setData(tableData);
@@ -151,7 +170,7 @@ function gridOnClick(e) {
         });
 
         border.add(checked);
-        e.source.add(checked);
+        e.source.add(border);
 
         $.nextBtn.opacity = 1;
     }

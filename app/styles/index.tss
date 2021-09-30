@@ -12,7 +12,8 @@
 	separatorStyle: Ti.UI.TABLE_VIEW_SEPARATOR_STYLE_NONE,
 	showVerticalScrollIndicator: true,
 	right : 30,
-	left : 30
+	left : 30,
+	top : 0
 }
 
 'TableView[platform=ios]': {
