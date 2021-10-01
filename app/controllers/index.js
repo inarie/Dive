@@ -60,15 +60,15 @@ $.leftView.addEventListener('postlayout', () => {
             backgroundColor: 'transparent'
         });
 
-        var nameRow = Ti.UI.createTableViewRow({
+        var nameRow = ((Ti.Platform.name === "android") ? Ti.UI.createTableViewRow({
             className : 'grid',
             layout : 'horizontal',
             height : Ti.UI.SIZE,
             backgroundSelectedColor : 'transparent',
             backgroundColor: 'transparent',
-            top : (Ti.Platform.name === "android" ? 10 : undefined),
+            top : 10,
             bottom : 16
-        });
+        }) : undefined );
 
         for (var x = 0; x < xGrid; x++){
             var view = Ti.UI.createView({
@@ -104,17 +104,9 @@ $.leftView.addEventListener('postlayout', () => {
 
             view.add(teamLogo);
             view.add(teamLogoSaturation);
-            row.add(view);
 
-            var nameView = Ti.UI.createView({
-                left : verticalPadding,
-                right : verticalPadding,
-                height : Ti.UI.SIZE,
-                width : cellWidthAndHeight
-            });
-            
             var teamName = Ti.UI.createLabel({
-                top: (Ti.Platform.name === "android" ? 0 : 10),
+                top: (Ti.Platform.name === "android" ? 0 : -35),
                 font : {
                     fontSize : 20,
                     fontFamily : 'Roboto-Regular'
@@ -125,12 +117,28 @@ $.leftView.addEventListener('postlayout', () => {
                 teamID : teams[cellIndex].name + cellIndex.toString()
             });
 
-            nameView.add(teamName);
-            nameRow.add(nameView);
-            
+            if(nameRow != undefined){
+                var nameView = Ti.UI.createView({
+                    left : verticalPadding,
+                    right : verticalPadding,
+                    height : Ti.UI.SIZE,
+                    width : cellWidthAndHeight
+                });
+    
+                nameView.add(teamName);
+                nameRow.add(nameView);
+            }else{
+                view.add(teamName);
+            }
+
+            row.add(view);
+
             cellIndex++;
         }
-        row.add(nameRow);
+
+        if(nameRow != undefined)
+            row.add(nameRow);
+
         tableData.push(row);
     }
 
@@ -138,21 +146,17 @@ $.leftView.addEventListener('postlayout', () => {
 });
 
 function gridOnClick(e) {
-    var cellWidthAndHeight = 0;
-
     if(e.source.teamID){
         Ti.API.info('Clicked: ' + e.source.teamID);
 
         if(Ti.Platform.name === "android"){
-            cellWidthAndHeight = 240;
-
             for(var x = 0; x < 3; x++){
                 if(e.row.children[x].teamID === e.source.teamID){
                     e.row.children[x].add(Ti.UI.createLabel({
                         width : 40,
                         height : 40,
                         borderRadius : 4,
-                        borderWidth : 2,
+                        borderWidth : 0,
                         backgroundColor : '#2B8CCC',
                         top : 10,
                         right : 10
@@ -172,13 +176,11 @@ function gridOnClick(e) {
                 }
             }
         } else {
-            cellWidthAndHeight = 190;
-
             e.source.add(Ti.UI.createLabel({
-                width : 40,
-                height : 40,
+                width : 35,
+                height : 35,
                 borderRadius : 4,
-                borderWidth : 2,
+                borderWidth : 0,
                 backgroundColor : '#2B8CCC',
                 top : 10,
                 right : 10
@@ -193,7 +195,7 @@ function gridOnClick(e) {
                     fontFamily : 'Roboto-Regular'
                 },
                 top : 10,
-                right : 16
+                right : 14
             }));
         }
 
