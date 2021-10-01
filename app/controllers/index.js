@@ -39,9 +39,10 @@ $.leftView.addEventListener('postlayout', () => {
     var cellWidthAndHeight = 0;
 
     if(Ti.Platform.name === "android"){
+        console.log(Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.75) - 194) / 3) - 16);
         cellWidthAndHeight = 240;
     } else {
-        cellWidthAndHeight = 190;
+        cellWidthAndHeight = Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.75) - 194) / 3) - 16;
     }
 
     var verticalPadding = 30;
