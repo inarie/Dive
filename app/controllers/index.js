@@ -45,7 +45,6 @@ $.leftView.addEventListener('postlayout', () => {
     }
 
     var verticalPadding = 30;
-    var horizontalPadding = 50; 
     var xGrid = 3;
     var yGrid = 6;
 
@@ -56,7 +55,7 @@ $.leftView.addEventListener('postlayout', () => {
         var row = Ti.UI.createTableViewRow({
             className : 'grid',
             layout : 'horizontal',
-            height : cellWidthAndHeight,
+            height : cellWidthAndHeight + 50,
             backgroundSelectedColor : 'transparent',
             backgroundColor: 'transparent'
         });
@@ -78,9 +77,12 @@ $.leftView.addEventListener('postlayout', () => {
                 right : verticalPadding,
                 height : cellWidthAndHeight,
                 width : cellWidthAndHeight,
-                viewShadowColor: 'rgba(0, 0, 0, 0.5)',
-                viewShadowRadius: 4,
-                viewShadowOffset: { x: 0, y: 8 }
+                viewShadowColor: (Ti.Platform.name === "android" ? undefined :  'rgba(0, 0, 0, 0.5)'),
+                viewShadowRadius: (Ti.Platform.name === "android" ? undefined :  4),
+                viewShadowOffset: (Ti.Platform.name === "android" ? undefined :  { x: 0, y: 8 }),
+                shadowRadius: (Ti.Platform.name === "android" ? 4 :  undefined),
+                shadowColor: (Ti.Platform.name === "android" ? 'rgba(0, 0, 0, 0.5)' :  undefined),
+                shadowOffset: (Ti.Platform.name === "android" ? { x: 0, y: 8 } :  undefined),
             });
             
             var teamLogo = Ti.UI.createImageView({
@@ -119,7 +121,7 @@ $.leftView.addEventListener('postlayout', () => {
                 },
                 color : 'rgba(0, 0, 0, 0.87)',
                 text : teams[cellIndex].name,
-                touchEnabled : true,
+                touchEnabled : false,
                 teamID : teams[cellIndex].name + cellIndex.toString()
             });
 
@@ -128,8 +130,8 @@ $.leftView.addEventListener('postlayout', () => {
             
             cellIndex++;
         }
+        row.add(nameRow);
         tableData.push(row);
-        tableData.push(nameRow);
     }
 
     $.grid.setData(tableData);
@@ -138,41 +140,67 @@ $.leftView.addEventListener('postlayout', () => {
 function gridOnClick(e) {
     var cellWidthAndHeight = 0;
 
-    if(Ti.Platform.name === "android"){
-        cellWidthAndHeight = 240;
-    } else {
-        cellWidthAndHeight = 190;
-    }
-
     if(e.source.teamID){
         Ti.API.info('Clicked: ' + e.source.teamID);
 
+        if(Ti.Platform.name === "android"){
+            cellWidthAndHeight = 240;
+
+            for(var x = 0; x < 3; x++){
+                if(e.row.children[x].teamID === e.source.teamID){
+                    e.row.children[x].add(Ti.UI.createLabel({
+                        width : 40,
+                        height : 40,
+                        borderRadius : 4,
+                        borderWidth : 2,
+                        backgroundColor : '#2B8CCC',
+                        top : 10,
+                        right : 10
+                    }));
+
+                    e.row.children[x].add(Ti.UI.createLabel({
+                        text : '✓',
+                        color : '#fff',
+                        textAlign : Ti.UI.TEXT_ALIGNMENT_RIGHT,
+                        font : {
+                            fontSize : 30,
+                            fontFamily : 'Roboto-Regular'
+                        },
+                        top : 10,
+                        right : 16
+                    }));
+                }
+            }
+        } else {
+            cellWidthAndHeight = 190;
+
+            e.source.add(Ti.UI.createLabel({
+                width : 40,
+                height : 40,
+                borderRadius : 4,
+                borderWidth : 2,
+                backgroundColor : '#2B8CCC',
+                top : 10,
+                right : 10
+            }));
+
+            e.source.add(Ti.UI.createLabel({
+                text : '✓',
+                color : '#fff',
+                textAlign : Ti.UI.TEXT_ALIGNMENT_RIGHT,
+                font : {
+                    fontSize : 30,
+                    fontFamily : 'Roboto-Regular'
+                },
+                top : 10,
+                right : 16
+            }));
+        }
+
         e.source.backgroundColor = 'rgba(255, 255, 255, 0.01)';
-
-        var border = Ti.UI.createLabel({
-            height : cellWidthAndHeight,
-            width : cellWidthAndHeight,
-            borderRadius : 4,
-            borderWidth : 2,
-            borderColor: '#2B8CCC',
-            touchEnabled : false
-        });
-
-        var checked = Ti.UI.createLabel({
-            top : 10,
-            right : 10,
-            font : {
-                fontSize : 30,
-                fontFamily : 'FontAwesome'
-            },
-            color : '#2B8CCC',
-            text : '\uf14a',
-            textAlign: Ti.UI.TEXT_ALIGNMENT_RIGHT,
-            touchEnabled : false
-        });
-
-        border.add(checked);
-        e.source.add(border);
+        e.source.borderRadius = 4;
+        e.source.borderWidth = 2;
+        e.source.borderColor = '#2B8CCC';
 
         $.nextBtn.opacity = 1;
     }
