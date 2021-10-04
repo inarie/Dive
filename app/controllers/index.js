@@ -39,8 +39,11 @@ $.leftView.addEventListener('postlayout', () => {
     var cellWidthAndHeight = 0;
 
     if(Ti.Platform.name === "android"){
-        console.log(Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.75) - 194) / 3) - 16);
-        cellWidthAndHeight = 240;
+        if(Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.75) - 194) / 3) - 145 < 100){
+            cellWidthAndHeight = Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.75) - 194) / 3) - (Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.75) - 194) / 3) - 160);
+        }else{
+            cellWidthAndHeight = Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.75) - 194) / 3) - (Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.75) - 194) / 3) - 240);
+        }
     } else {
         cellWidthAndHeight = Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.75) - 194) / 3) - 16;
     }
@@ -61,15 +64,15 @@ $.leftView.addEventListener('postlayout', () => {
             backgroundColor: 'transparent'
         });
 
-        var nameRow = ((Ti.Platform.name === "android") ? Ti.UI.createTableViewRow({
-            className : 'grid',
+        var nameRow = ((Ti.Platform.name === "android") ? (Ti.UI.createTableViewRow({
             layout : 'horizontal',
             height : Ti.UI.SIZE,
+            width : Ti.UI.SIZE,
             backgroundSelectedColor : 'transparent',
             backgroundColor: 'transparent',
             top : 10,
-            bottom : 16
-        }) : undefined );
+            bottom : 16,
+        })) : undefined );
 
         for (var x = 0; x < xGrid; x++){
             var view = Ti.UI.createView({
@@ -137,8 +140,9 @@ $.leftView.addEventListener('postlayout', () => {
             cellIndex++;
         }
 
-        if(nameRow != undefined)
+        if(nameRow != undefined){
             row.add(nameRow);
+        }
 
         tableData.push(row);
     }
