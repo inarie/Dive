@@ -1,0 +1,42 @@
+'#leftView': {
+	layout: 'vertical',
+	width: '50%'
+}
+
+'TableView': {
+	width: Ti.UI.FILL,
+	height: Ti.UI.SIZE,
+	backgroundColor: 'transparent',
+	separatorColor: 'transparent',
+	separatorStyle: Ti.UI.TABLE_VIEW_SEPARATOR_STYLE_NONE,
+	showVerticalScrollIndicator: true,
+	right : 30,
+	left : 30,
+	top : 0
+}
+
+'TableView[platform=ios]': {
+	scrollIndicatorStyle: Ti.UI.iOS.ScrollIndicatorStyle.BLACK
+}
+
+'Button': {
+	bottom: 67,
+	font: {
+		fontSize: 20,
+		fontFamily: 'Roboto-Medium'
+	},
+	width: '20%',
+    height: '8%',
+	backgroundColor: '#194A8E',
+    color: 'white',
+	title: 'NEXT',
+    borderRadius: 20,
+    borderWidth: 0,
+	opacity: 0
+}
+
+'#rightView': {
+	layout: 'vertical',
+	width: '50%',
+	backgroundColor: 'rgb(0, 28, 96)'
+}

@@ -1,54 +1,34 @@
+// Arguments passed into this controller can be accessed via the `$.args` object directly or:
+var args = $.args;
+
+var choice = null;
+
 var tableData = [];
 
-var teamChoices = [];
-
 var teams = [
-    {name : 'Monk seal', logo : 'http://wave-labs.org/api/image/dive/1' },
-    {name : 'Seagrass', logo : 'http://wave-labs.org/api/image/dive/2' },
-    {name : 'Seahorse', logo : 'http://wave-labs.org/api/image/dive/3' },
-    {name : 'Dusky grouper', logo : 'http://wave-labs.org/api/image/dive/4' },
-    {name : 'Red hogfish', logo : 'http://wave-labs.org/api/image/dive/5' },
-    {name : 'Black coral', logo : 'http://wave-labs.org/api/image/dive/6' },
-    {name : 'Swimming crab', logo : 'http://wave-labs.org/api/image/dive/7' },
-    {name : 'Green reef coral', logo : 'http://wave-labs.org/api/image/dive/8' },
-    {name : 'Harpoon weed', logo : 'http://wave-labs.org/api/image/dive/9' },
-    {name : 'Button tunicate', logo : 'http://wave-labs.org/api/image/dive/10' },
-    {name : 'Loggerhead turtle', logo : 'http://wave-labs.org/api/image/dive/11' },
-    {name : 'Fire Coral', logo : 'http://wave-labs.org/api/image/dive/12' },
-	{name : 'Bushy encrusting anemone', logo : 'http://wave-labs.org/api/image/dive/13' },
-    {name : 'Warty umbrella snail', logo : 'http://wave-labs.org/api/image/dive/14' },
-    {name : 'Caulerpa seaweed', logo : 'http://wave-labs.org/api/image/dive/15' },
-    {name : 'Octopus', logo : 'http://wave-labs.org/api/image/dive/16' },
-    {name : 'Gilthead seabream', logo : 'http://wave-labs.org/api/image/dive/17' },
-    {name : 'Leafy flat-blade algae', logo : 'http://wave-labs.org/api/image/dive/18' }
+    {name : '1', logo : 'http://s3.amazonaws.com/pix.iemoji.com/images/emoji/apple/ios-12/256/fish.png' },
+    {name : '2', logo : 'http://s3.amazonaws.com/pix.iemoji.com/images/emoji/apple/ios-12/256/fish.png' },
+    {name : '3', logo : 'http://s3.amazonaws.com/pix.iemoji.com/images/emoji/apple/ios-12/256/fish.png' },
+    {name : '> 3', logo : 'http://s3.amazonaws.com/pix.iemoji.com/images/emoji/apple/ios-12/256/fish.png' }
 ];
 
-$.index.open();
+var cellWidthAndHeight = 0;
 
-$.nextBtn.addEventListener('click', () => {
-    console.log(teamChoices);
-    /* var dMain = Alloy.createController('amountSpecies').getView();
-    dMain.open(); */
-});
-
+if(Ti.Platform.name === "android"){
+    if(Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.5) - 82) / 2) < 200){
+        cellWidthAndHeight = Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.5) - 82) / 2) - (Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.5) - 82) / 2) - 149);
+    }else{
+        cellWidthAndHeight = Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.5) - 82) / 2) - (Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.5) - 82) / 2) - 229);
+    }
+} else {
+    cellWidthAndHeight = Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.5) - 82) / 2) - 16;
+}
 
 $.leftView.addEventListener('postlayout', (e) => {
     if($.grid.data.length === 0){
-        var cellWidthAndHeight = 0;
-
-        if(Ti.Platform.name === "android"){
-            if(Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.75) - 194) / 3) - 145 < 100){
-                cellWidthAndHeight = Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.75) - 194) / 3) - (Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.75) - 194) / 3) - 160);
-            }else{
-                cellWidthAndHeight = Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.75) - 194) / 3) - (Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.75) - 194) / 3) - 240);
-            }
-        } else {
-            cellWidthAndHeight = Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.75) - 194) / 3) - 16;
-        }
-
         var verticalPadding = 30;
-        var xGrid = 3;
-        var yGrid = 6;
+        var xGrid = 2;
+        var yGrid = 2;
 
         var cellIndex = 0;
 
@@ -57,7 +37,7 @@ $.leftView.addEventListener('postlayout', (e) => {
             var row = Ti.UI.createTableViewRow({
                 className : 'grid',
                 layout : 'horizontal',
-                height : cellWidthAndHeight + 60,
+                height : cellWidthAndHeight + 50,
                 backgroundSelectedColor : 'transparent',
                 backgroundColor: 'transparent'
             });
@@ -68,7 +48,7 @@ $.leftView.addEventListener('postlayout', (e) => {
                 width : Ti.UI.SIZE,
                 backgroundSelectedColor : 'transparent',
                 backgroundColor: 'transparent',
-                top : 5,
+                top : 10,
                 bottom : 16,
             })) : undefined );
 
@@ -98,26 +78,17 @@ $.leftView.addEventListener('postlayout', (e) => {
                         viewShadowOffset: { x: 0, y: 8 }
                     });
                 }
-
+                
                 var teamLogo = Ti.UI.createImageView({
                     image : teams[cellIndex].logo,
                     height : cellWidthAndHeight,
                     width : cellWidthAndHeight,
                     borderRadius : 4,
-                    borderWidth: 0
-                });
-
-                var teamLogoSaturation = Ti.UI.createLabel({
-                    height : cellWidthAndHeight,
-                    width : cellWidthAndHeight,
-                    borderRadius : 4,
-                    borderWidth : 0,
-                    backgroundColor: 'rgba(255, 255, 255, 0.5)',
-                    teamID : teams[cellIndex].name + cellIndex.toString(),
+                    borderWidth: 0,
+                    teamID : teams[cellIndex].name + cellIndex.toString()
                 });
 
                 view.add(teamLogo);
-                view.add(teamLogoSaturation);
 
                 var teamName = Ti.UI.createLabel({
                     top: (Ti.Platform.name === "android" ? 0 : -35),
@@ -129,7 +100,7 @@ $.leftView.addEventListener('postlayout', (e) => {
                     text : teams[cellIndex].name,
                     textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
                     touchEnabled : false,
-                    teamID : teams[cellIndex].name + cellIndex.toString(),
+                    teamID : teams[cellIndex].name + cellIndex.toString()
                 });
 
                 if(nameRow != undefined){
@@ -164,23 +135,29 @@ $.leftView.addEventListener('postlayout', (e) => {
 
 $.grid.addEventListener('click', (e) => {
     if(e.source.teamID){
-        teamChoices.push(e.source.teamID);
-        var dMain = Alloy.createController('speciesAmount', teamChoices[teamChoices.length - 1]).getView();
-        dMain.open();
-    }
-});
-
-function gridOnClick(e) {
-    if(e.source.teamID){
-        Ti.API.info('Clicked: ' + e.source.teamID);
-
         if(Ti.Platform.name === "android"){
-            for(var x = 0; x < 3; x++){
+            /* if(choice != null){
+                for(var x = 0; x < 2; x++){
+                    e.row.children[x].remove();
+                }
+            } */
+            
+            choice = e.source.teamID;
+
+            for(var x = 0; x < 2; x++){
                 if(e.row.children[x].teamID === e.source.teamID){
+                    e.row.children[x].add(Ti.UI.createLabel({
+                        width : cellWidthAndHeight,
+                        height : cellWidthAndHeight,
+                        borderRadius : 4,
+                        borderWidth : 0,
+                        backgroundColor : 'rgba(101, 167, 209, 0.15)'
+                    }));
+
                     e.row.children[x].add(Ti.UI.createLabel({
                         width : 40,
                         height : 40,
-                        borderRadius : 4,
+                        borderRadius : 40,
                         borderWidth : 0,
                         backgroundColor : '#2B8CCC',
                         top : 10,
@@ -204,7 +181,7 @@ function gridOnClick(e) {
             e.source.add(Ti.UI.createLabel({
                 width : 35,
                 height : 35,
-                borderRadius : 4,
+                borderRadius : 35,
                 borderWidth : 0,
                 backgroundColor : '#2B8CCC',
                 top : 10,
@@ -231,4 +208,5 @@ function gridOnClick(e) {
 
         $.nextBtn.opacity = 1;
     }
-}
+});
+

@@ -1,8 +1,8 @@
 <Alloy>
-	<Window>
+	<Window id="win">
 		<View id="leftView">
 			<View id="leftTopView">
-				<Label id="title">I've seen</Label>
+				<Label id="title">There were around</Label>
 			</View>
 			<View id="leftBottomView">
 				<TableView id="grid"></TableView>
@@ -10,7 +10,7 @@
 			</View>
 		</View>
 		<View id="rightView">"
-			<ImageView image="https://miro.medium.com/max/666/1*szJxKw57OEk_7S48u1X_Rw.gif"></ImageView>
+			
 		</View>
 	</Window>
 </Alloy>
