@@ -21,7 +21,7 @@ if(Ti.Platform.name === "android"){
         cellWidthAndHeight = Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.5) - 82) / 2) - (Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.5) - 82) / 2) - 229);
     }
 } else {
-    cellWidthAndHeight = Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.5) - 82) / 2) - 16;
+    cellWidthAndHeight = Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.5) - 82) / 2) - 50;
 }
 
 $.leftView.addEventListener('postlayout', (e) => {
@@ -91,16 +91,17 @@ $.leftView.addEventListener('postlayout', (e) => {
                 view.add(teamLogo);
 
                 var teamName = Ti.UI.createLabel({
-                    top: (Ti.Platform.name === "android" ? 0 : -35),
+                    bottom : (Ti.Platform.name === "android" ? undefined : -40),
                     font : {
-                        fontSize : 18,
+                        fontSize : (Ti.Platform.name === "android" ? 20 : 22),
                         fontFamily : 'Roboto-Regular'
                     },
                     color : 'rgba(0, 0, 0, 0.87)',
                     text : teams[cellIndex].name,
                     textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
                     touchEnabled : false,
-                    teamID : teams[cellIndex].name + cellIndex.toString()
+                    teamID : teams[cellIndex].name + cellIndex.toString(),
+                    maxLines : 1
                 });
 
                 if(nameRow != undefined){
@@ -133,78 +134,84 @@ $.leftView.addEventListener('postlayout', (e) => {
     }
 });
 
+var selectedBackground = Ti.UI.createLabel({
+    width : cellWidthAndHeight,
+    height : cellWidthAndHeight,
+    borderRadius : 4,
+    borderWidth : 2,
+    borderColor : '#2B8CCC',
+    backgroundColor : 'rgba(101, 167, 209, 0.15)'
+});
+
+var selected = Ti.UI.createLabel({
+    width : (Ti.Platform.name === "android") ? 40 : 35,
+    height : (Ti.Platform.name === "android") ? 40 : 35,
+    borderRadius : (Ti.Platform.name === "android") ? 40 : 18,
+    borderWidth : 0,
+    backgroundColor : '#2B8CCC',
+    top : 10,
+    right : 10
+});
+
+var selectedIcon = Ti.UI.createLabel({
+    text : '✓',
+    color : '#fff',
+    textAlign : Ti.UI.TEXT_ALIGNMENT_RIGHT,
+    font : {
+        fontSize : 30,
+        fontFamily : 'Roboto-Regular'
+    },
+    top : 10,
+    right : (Ti.Platform.name === "android") ? 16 : 14
+});
+
 $.grid.addEventListener('click', (e) => {
     if(e.source.teamID){
         if(Ti.Platform.name === "android"){
-            /* if(choice != null){
-                for(var x = 0; x < 2; x++){
-                    e.row.children[x].remove();
+            if(choice != null){
+                for(var x = 0; x < e.section.rows.length; x++){
+                    for (let y = 0; y < e.section.rows[x].children.length - 1; y++) {
+                        e.section.rows[x].children[y].removeAllChildren();
+                        e.section.rows[x].children[y].add(Ti.UI.createImageView({
+                            image : teams[0].logo,
+                            height : cellWidthAndHeight,
+                            width : cellWidthAndHeight,
+                            borderRadius : 4,
+                            borderWidth: 0,
+                            touchEnabled : false
+                        }));
+                    }
                 }
-            } */
+            }
             
             choice = e.source.teamID;
 
             for(var x = 0; x < 2; x++){
-                if(e.row.children[x].teamID === e.source.teamID){
-                    e.row.children[x].add(Ti.UI.createLabel({
-                        width : cellWidthAndHeight,
-                        height : cellWidthAndHeight,
-                        borderRadius : 4,
-                        borderWidth : 0,
-                        backgroundColor : 'rgba(101, 167, 209, 0.15)'
-                    }));
-
-                    e.row.children[x].add(Ti.UI.createLabel({
-                        width : 40,
-                        height : 40,
-                        borderRadius : 40,
-                        borderWidth : 0,
-                        backgroundColor : '#2B8CCC',
-                        top : 10,
-                        right : 10
-                    }));
-
-                    e.row.children[x].add(Ti.UI.createLabel({
-                        text : '✓',
-                        color : '#fff',
-                        textAlign : Ti.UI.TEXT_ALIGNMENT_RIGHT,
-                        font : {
-                            fontSize : 30,
-                            fontFamily : 'Roboto-Regular'
-                        },
-                        top : 10,
-                        right : 16
-                    }));
+                for (let y = 0; y < 2; y++) {
+                    if(e.section.rows[x].children[y].teamID === choice){
+                        e.section.rows[x].children[y].add(selectedBackground);
+                        e.section.rows[x].children[y].add(selected);
+                        e.section.rows[x].children[y].add(selectedIcon);
+                    }
                 }
             }
         } else {
-            e.source.add(Ti.UI.createLabel({
-                width : 35,
-                height : 35,
-                borderRadius : 35,
-                borderWidth : 0,
-                backgroundColor : '#2B8CCC',
-                top : 10,
-                right : 10
-            }));
+            if(choice != null){
+                for(var x = 0; x < 2; x++){
+                    for (let y = 0; y < 2; y++) {
+                        e.section.rows[x].children[y].remove(selectedBackground);
+                        e.section.rows[x].children[y].remove(selected);
+                        e.section.rows[x].children[y].remove(selectedIcon);
+                    }
+                }
+            }
 
-            e.source.add(Ti.UI.createLabel({
-                text : '✓',
-                color : '#fff',
-                textAlign : Ti.UI.TEXT_ALIGNMENT_RIGHT,
-                font : {
-                    fontSize : 30,
-                    fontFamily : 'Roboto-Regular'
-                },
-                top : 10,
-                right : 14
-            }));
+            choice = e.source.teamID;
+
+            e.source.add(selectedBackground);
+            e.source.add(selected);
+            e.source.add(selectedIcon);
         }
-
-        e.source.backgroundColor = 'rgba(255, 255, 255, 0.01)';
-        e.source.borderRadius = 4;
-        e.source.borderWidth = 2;
-        e.source.borderColor = '#2B8CCC';
 
         $.nextBtn.opacity = 1;
     }

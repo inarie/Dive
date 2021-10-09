@@ -5,7 +5,9 @@
 				<Label id="title">There were around</Label>
 			</View>
 			<View id="leftBottomView">
-				<TableView id="grid"></TableView>
+				<View id="center">
+					<TableView id="grid"></TableView>
+				</View>
 				<Button id="nextBtn"></Button>
 			</View>
 		</View>

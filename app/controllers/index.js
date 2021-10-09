@@ -2,25 +2,30 @@ var tableData = [];
 
 var teamChoices = [];
 
+/* {
+    id : ,
+    abundance : ,
+} */
+
 var teams = [
-    {name : 'Monk seal', logo : 'http://wave-labs.org/api/image/dive/1' },
-    {name : 'Seagrass', logo : 'http://wave-labs.org/api/image/dive/2' },
-    {name : 'Seahorse', logo : 'http://wave-labs.org/api/image/dive/3' },
-    {name : 'Dusky grouper', logo : 'http://wave-labs.org/api/image/dive/4' },
-    {name : 'Red hogfish', logo : 'http://wave-labs.org/api/image/dive/5' },
-    {name : 'Black coral', logo : 'http://wave-labs.org/api/image/dive/6' },
-    {name : 'Swimming crab', logo : 'http://wave-labs.org/api/image/dive/7' },
-    {name : 'Green reef coral', logo : 'http://wave-labs.org/api/image/dive/8' },
-    {name : 'Harpoon weed', logo : 'http://wave-labs.org/api/image/dive/9' },
-    {name : 'Button tunicate', logo : 'http://wave-labs.org/api/image/dive/10' },
-    {name : 'Loggerhead turtle', logo : 'http://wave-labs.org/api/image/dive/11' },
-    {name : 'Fire Coral', logo : 'http://wave-labs.org/api/image/dive/12' },
-	{name : 'Bushy encrusting anemone', logo : 'http://wave-labs.org/api/image/dive/13' },
-    {name : 'Warty umbrella snail', logo : 'http://wave-labs.org/api/image/dive/14' },
-    {name : 'Caulerpa seaweed', logo : 'http://wave-labs.org/api/image/dive/15' },
-    {name : 'Octopus', logo : 'http://wave-labs.org/api/image/dive/16' },
-    {name : 'Gilthead seabream', logo : 'http://wave-labs.org/api/image/dive/17' },
-    {name : 'Leafy flat-blade algae', logo : 'http://wave-labs.org/api/image/dive/18' }
+    { name : 'Monk seal', logo : 'http://wave-labs.org/api/image/dive/1' },
+    { name : 'Seagrass', logo : 'http://wave-labs.org/api/image/dive/2' },
+    { name : 'Seahorse', logo : 'http://wave-labs.org/api/image/dive/3' },
+    { name : 'Dusky grouper', logo : 'http://wave-labs.org/api/image/dive/4' },
+    { name : 'Red hogfish', logo : 'http://wave-labs.org/api/image/dive/5' },
+    { name : 'Black coral', logo : 'http://wave-labs.org/api/image/dive/6' },
+    { name : 'Swimming crab', logo : 'http://wave-labs.org/api/image/dive/7' },
+    { name : 'Green reef coral', logo : 'http://wave-labs.org/api/image/dive/8' },
+    { name : 'Harpoon weed', logo : 'http://wave-labs.org/api/image/dive/9' },
+    { name : 'Button tunicate', logo : 'http://wave-labs.org/api/image/dive/10' },
+    { name : 'Loggerhead turtle', logo : 'http://wave-labs.org/api/image/dive/11' },
+    { name : 'Fire Coral', logo : 'http://wave-labs.org/api/image/dive/12' },
+	{ name : 'Bushy encrusting anemone', logo : 'http://wave-labs.org/api/image/dive/13' },
+    { name : 'Warty umbrella snail', logo : 'http://wave-labs.org/api/image/dive/14' },
+    { name : 'Caulerpa seaweed', logo : 'http://wave-labs.org/api/image/dive/15' },
+    { name : 'Octopus', logo : 'http://wave-labs.org/api/image/dive/16' },
+    { name : 'Gilthead seabream', logo : 'http://wave-labs.org/api/image/dive/17' },
+    { name : 'Leafy flat-blade algae', logo : 'http://wave-labs.org/api/image/dive/18' }
 ];
 
 $.index.open();
@@ -30,7 +35,6 @@ $.nextBtn.addEventListener('click', () => {
     /* var dMain = Alloy.createController('amountSpecies').getView();
     dMain.open(); */
 });
-
 
 $.leftView.addEventListener('postlayout', (e) => {
     if($.grid.data.length === 0){
@@ -120,9 +124,9 @@ $.leftView.addEventListener('postlayout', (e) => {
                 view.add(teamLogoSaturation);
 
                 var teamName = Ti.UI.createLabel({
-                    top: (Ti.Platform.name === "android" ? 0 : -35),
+                    bottom: (Ti.Platform.name === "android" ? undefined : -40),
                     font : {
-                        fontSize : 18,
+                        fontSize : (Ti.Platform.name === "android" ? 20 : 22),
                         fontFamily : 'Roboto-Regular'
                     },
                     color : 'rgba(0, 0, 0, 0.87)',
@@ -130,6 +134,7 @@ $.leftView.addEventListener('postlayout', (e) => {
                     textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
                     touchEnabled : false,
                     teamID : teams[cellIndex].name + cellIndex.toString(),
+                    maxLines : 1
                 });
 
                 if(nameRow != undefined){

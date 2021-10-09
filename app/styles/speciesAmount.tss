@@ -3,20 +3,27 @@
 	width: '50%'
 }
 
+'#center': {
+	layout: 'horizontal',
+	top : '5%',
+	bottom: '5%'	
+}
+
+'#center[platform=ios]': {
+	layout: 'horizontal',
+	top : '10%',
+	bottom: '10%'
+}
+
 'TableView': {
 	width: Ti.UI.FILL,
 	height: Ti.UI.SIZE,
 	backgroundColor: 'transparent',
 	separatorColor: 'transparent',
 	separatorStyle: Ti.UI.TABLE_VIEW_SEPARATOR_STYLE_NONE,
-	showVerticalScrollIndicator: true,
+	scrollable: false,
 	right : 30,
-	left : 30,
-	top : 0
-}
-
-'TableView[platform=ios]': {
-	scrollIndicatorStyle: Ti.UI.iOS.ScrollIndicatorStyle.BLACK
+	left : 30
 }
 
 'Button': {
