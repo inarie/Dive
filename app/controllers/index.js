@@ -124,7 +124,7 @@ $.leftView.addEventListener('postlayout', (e) => {
                 view.add(teamLogoSaturation);
 
                 var teamName = Ti.UI.createLabel({
-                    bottom: (Ti.Platform.name === "android" ? undefined : -40),
+                    bottom: (Ti.Platform.name === "android" ? 0 : -35),
                     font : {
                         fontSize : (Ti.Platform.name === "android" ? 20 : 22),
                         fontFamily : 'Roboto-Regular'

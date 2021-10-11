@@ -91,7 +91,7 @@ $.leftView.addEventListener('postlayout', (e) => {
                 view.add(teamLogo);
 
                 var teamName = Ti.UI.createLabel({
-                    bottom : (Ti.Platform.name === "android" ? undefined : -40),
+                    bottom: (Ti.Platform.name === "android" ? 0 : -35),
                     font : {
                         fontSize : (Ti.Platform.name === "android" ? 20 : 22),
                         fontFamily : 'Roboto-Regular'
@@ -213,7 +213,19 @@ $.grid.addEventListener('click', (e) => {
             e.source.add(selectedIcon);
         }
 
+        e.source.backgroundColor = 'rgba(255, 255, 255, 0.01)';
+        e.source.borderRadius = 4;
+        e.source.borderWidth = 2;
+        e.source.borderColor = '#2B8CCC';
+
         $.nextBtn.opacity = 1;
     }
 });
 
+$.backBtn.addEventListener('click', () => {
+    $.win.close();
+});
+
+$.doneBtn.addEventListener('click', () => {
+    $.win.close();
+});

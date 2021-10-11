@@ -2,13 +2,14 @@
 	<Window id="win">
 		<View id="leftView">
 			<View id="leftTopView">
+				<Button id="backBtn"></Button>
 				<Label id="title">There were around</Label>
 			</View>
 			<View id="leftBottomView">
 				<View id="center">
 					<TableView id="grid"></TableView>
 				</View>
-				<Button id="nextBtn"></Button>
+				<Button id="doneBtn"></Button>
 			</View>
 		</View>
 		<View id="rightView">"
