@@ -11,7 +11,7 @@ Alloy.Globals.data.forEach(element => {
     }
 });
 
-var teams = [
+var data = [
     {name : '1', logo : 'http://s3.amazonaws.com/pix.iemoji.com/images/emoji/apple/ios-12/256/fish.png' },
     {name : '2', logo : 'http://s3.amazonaws.com/pix.iemoji.com/images/emoji/apple/ios-12/256/fish.png' },
     {name : '3', logo : 'http://s3.amazonaws.com/pix.iemoji.com/images/emoji/apple/ios-12/256/fish.png' },
@@ -21,16 +21,18 @@ var teams = [
 var cellWidthAndHeight = Alloy.Globals.cellWidthAndHeight(2);
 
 $.win.addEventListener('focus', () => {
-    $.grid.setData(Alloy.Globals.setTable(2, 2, cellWidthAndHeight, 50, teams, args));
+    $.grid.setData(Alloy.Globals.setTable(2, Math.ceil(data.length / 2), cellWidthAndHeight, 50, data, args));
 
-    if(Alloy.Globals.data.length > 0){
-        $.doneBtn.opacity = 1;
-    }
+    if(Alloy.Globals.data.forEach(element => {
+        if(element.specie === args){
+            $.doneBtn.opacity = 1;
+        }
+    }));
 });
 
 $.grid.addEventListener('click', (e) => {
     if(e.source.id){
-        choice = Alloy.Globals.selectOnlyOne(e, teams, cellWidthAndHeight, choice);
+        choice = Alloy.Globals.selectOnlyOne(e, data, cellWidthAndHeight, 2, choice);
         $.doneBtn.opacity = 1;
     }
 });
@@ -40,23 +42,25 @@ $.backBtn.addEventListener('click', () => {
 });
 
 $.doneBtn.addEventListener('click', () => {
-    var hasData = false;
+    if($.doneBtn.opacity == 1){
+        var hasData = false;
 
-    Alloy.Globals.data.forEach(element => {
-        if(element.specie === args){
-            hasData = true;
-        }
-    });
-
-    if(hasData){
         Alloy.Globals.data.forEach(element => {
             if(element.specie === args){
-                element.amount = choice;
+                hasData = true;
             }
         });
-    }else{
-        Alloy.Globals.data.push({ "specie" : args, "amount" : choice });
+
+        if(hasData){
+            Alloy.Globals.data.forEach(element => {
+                if(element.specie === args){
+                    element.amount = choice;
+                }
+            });
+        }else{
+            Alloy.Globals.data.push({ "specie" : args, "amount" : choice });
+        }
+        
+        $.win.close();
     }
-    
-    $.win.close();
 });

@@ -1,7 +1,8 @@
 <Alloy>
-	<Window>
+	<Window id="win">
 		<View id="leftView">
 			<View id="leftTopView">
+				<Button id="backBtn"></Button>
 				<Label id="title">I've seen</Label>
 			</View>
 			<View id="leftBottomView">
@@ -10,7 +11,7 @@
 			</View>
 		</View>
 		<View id="rightView">"
-
+			
 		</View>
 	</Window>
 </Alloy>

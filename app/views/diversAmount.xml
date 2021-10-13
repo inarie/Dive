@@ -1,16 +1,19 @@
 <Alloy>
-	<Window>
+	<Window id="win">
 		<View id="leftView">
 			<View id="leftTopView">
-				<Label id="title">I've seen</Label>
+				<Button id="backBtn"></Button>
+				<Label id="title">Number of Divers</Label>
 			</View>
 			<View id="leftBottomView">
-				<TableView id="grid"></TableView>
+				<View id="center">
+					<TableView id="grid"></TableView>
+				</View>
 				<Button id="nextBtn"></Button>
 			</View>
 		</View>
 		<View id="rightView">"
-
+			
 		</View>
 	</Window>
 </Alloy>

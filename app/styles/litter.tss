@@ -3,6 +3,23 @@
 	width: '75%'
 }
 
+'#backBtn': {
+	backgroundColor : 'transparent',
+	left: 40,
+	bottom: -5,
+	font: {
+		fontSize: 40,
+		fontFamily: 'Roboto-Medium'
+	},
+	width: Ti.UI.SIZE,
+    height: Ti.UI.SIZE,
+    color: '#194A8E',
+	title: '<',
+    borderRadius: 20,
+    borderWidth: 0,
+	opacity: 1
+}
+
 'TableView': {
 	width: Ti.UI.FILL,
 	height: Ti.UI.SIZE,

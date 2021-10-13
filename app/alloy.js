@@ -49,7 +49,7 @@ Alloy.Globals.cellWidthAndHeight = (columns) => {
 };
 
 // Creates a table as a grid with xGrid columns and yGrid rows
-Alloy.Globals.setTable = (xGrid, yGrid, cellWidthAndHeight, horizontalPadding, data, specie = null) => {
+Alloy.Globals.setTable = (xGrid, yGrid, cellWidthAndHeight, horizontalPadding, data, arg = null, saturation = false) => {
     var tableData = [];
     var verticalPadding = 30;
     var cellIndex = 0;
@@ -75,98 +75,111 @@ Alloy.Globals.setTable = (xGrid, yGrid, cellWidthAndHeight, horizontalPadding, d
         })) : undefined );
 
         for (var x = 0; x < xGrid; x++){
-            var view;
+            if(data[cellIndex] != null){
+                var view;
 
-            if(Ti.Platform.name == "android"){
-                view = Ti.UI.Android.createCardView({
-                    id : data[cellIndex].name,
-                    left : verticalPadding,
-                    right : verticalPadding,
-                    height : cellWidthAndHeight,
-                    width : cellWidthAndHeight,
-                    borderRadius : 4,
-                    borderWidth: 0,
-                    elevation: 8
-                });
-            }else{
-                view = Ti.UI.createView({
-                    id : data[cellIndex].name,
-                    left : verticalPadding,
-                    right : verticalPadding,
-                    height : cellWidthAndHeight,
-                    width : cellWidthAndHeight,
-                    viewShadowColor: 'rgba(0, 0, 0, 0.5)',
-                    viewShadowRadius: 4,
-                    viewShadowOffset: { x: 0, y: 8 }
-                });
-            }
+                if(Ti.Platform.name == "android"){
+                    view = Ti.UI.Android.createCardView({
+                        id : data[cellIndex].name,
+                        left : verticalPadding,
+                        right : verticalPadding,
+                        height : cellWidthAndHeight,
+                        width : cellWidthAndHeight,
+                        borderRadius : 4,
+                        borderWidth: 0,
+                        elevation: 8
+                    });
+                }else{
+                    view = Ti.UI.createView({
+                        id : data[cellIndex].name,
+                        left : verticalPadding,
+                        right : verticalPadding,
+                        height : cellWidthAndHeight,
+                        width : cellWidthAndHeight,
+                        viewShadowColor: 'rgba(0, 0, 0, 0.5)',
+                        viewShadowRadius: 4,
+                        viewShadowOffset: { x: 0, y: 8 }
+                    });
+                }
 
-            var image = Alloy.Globals.cellImage(cellWidthAndHeight, data[cellIndex]);
+                var image = cellImage(cellWidthAndHeight, data[cellIndex]);
+                view.add(image);
 
-            var imageSaturation = Ti.UI.createLabel({
-                height : cellWidthAndHeight,
-                width : cellWidthAndHeight,
-                borderRadius : 4,
-                borderWidth : 0,
-                backgroundColor: 'rgba(255, 255, 255, 0.5)',
-                id : data[cellIndex].name,
-            });
+                if(saturation){
+                    var imageSaturation = Ti.UI.createLabel({
+                        height : cellWidthAndHeight,
+                        width : cellWidthAndHeight,
+                        borderRadius : 4,
+                        borderWidth : 0,
+                        backgroundColor: 'rgba(255, 255, 255, 0.5)',
+                        id : data[cellIndex].name,
+                    });
+                    view.add(imageSaturation);
+                }
 
-            view.add(image);
-            if(xGrid != 2 && yGrid != 2){
-                view.add(imageSaturation);
-            }
+                var name = cellName(data[cellIndex]);
 
-            var name = Ti.UI.createLabel({
-                bottom: (Ti.Platform.name === "android" ? 0 : -35),
-                font : {
-                    fontSize : (Ti.Platform.name === "android" ? 20 : 22),
-                    fontFamily : 'Roboto-Regular'
-                },
-                color : 'rgba(0, 0, 0, 0.87)',
-                text : data[cellIndex].name,
-                textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
-                touchEnabled : false,
-                id : data[cellIndex].name,
-                maxLines : 1
-            });
+                if(nameRow != undefined){
+                    var nameView = Ti.UI.createView({
+                        left : verticalPadding,
+                        right : verticalPadding,
+                        height : Ti.UI.SIZE,
+                        width : cellWidthAndHeight
+                    });
+        
+                    nameView.add(name);
+                    nameRow.add(nameView);
+                }else{
+                    view.add(name);
+                }
 
-            if(nameRow != undefined){
-                var nameView = Ti.UI.createView({
-                    left : verticalPadding,
-                    right : verticalPadding,
-                    height : Ti.UI.SIZE,
-                    width : cellWidthAndHeight
-                });
-    
-                nameView.add(name);
-                nameRow.add(nameView);
-            }else{
-                view.add(name);
-            }
-
-            if(Alloy.Globals.data.length > 0){
-                Alloy.Globals.data.forEach(element => {
-                    if(xGrid != 2 && yGrid != 2){
-                        if(element.specie === data[cellIndex].name){
-                            view.remove(imageSaturation);
-                            view.add(Alloy.Globals.selectedBackground(cellWidthAndHeight, 'rgba(255, 255, 255, 0.01)'));
-                            view.add(Alloy.Globals.selectedIconBackground());
-                            view.add(Alloy.Globals.selectedIcon());
+                if(Alloy.Globals.data.length > 0){
+                    Alloy.Globals.data.forEach(element => {
+                        if(xGrid != 2){
+                            if(element.specie === data[cellIndex].name){
+                                view.remove(imageSaturation);
+                                view.add(selectedBackground(cellWidthAndHeight, 'rgba(255, 255, 255, 0.01)'));
+                                view.add(selectedIconBackground());
+                                view.add(selectedIcon());
+                            } else if(element.divingSpot === data[cellIndex].name) {
+                                view = addSelectionUIToView(view, xGrid);
+                            } else if(element.litter === data[cellIndex].name){
+                                view.add(selectedBackground(cellWidthAndHeight, 'rgba(255, 255, 255, 0.01)'));
+                                view.add(selectedIconBackground());
+                                view.add(selectedIcon());
+                            } else if(element.litterType && element.litterType.includes(data[cellIndex].name) && element.litter === arg){
+                                view.add(selectedBackground(cellWidthAndHeight, 'rgba(255, 255, 255, 0.01)'));
+                                view.add(selectedIconBackground());
+                                view.add(selectedIcon());
+                            }
+                        }else{
+                            if(element.amount === data[cellIndex].name && element.specie === arg) {
+                                view = addSelectionUIToView(view, xGrid);
+                            } else if(element.duration === data[cellIndex].name){
+                                view = addSelectionUIToView(view, xGrid);
+                            } else if(element.diversAmount === data[cellIndex].name){
+                                view = addSelectionUIToView(view, xGrid);
+                            }
                         }
-                    }else{
-                        if(element.amount === data[cellIndex].name && element.specie === specie) {
-                            view.add(Alloy.Globals.selectedBackground(cellWidthAndHeight, 'rgba(101, 167, 209, 0.15)'));
-                            view.add(Alloy.Globals.selectedIconBackground());
-                            view.add(Alloy.Globals.selectedIcon());
-                        }
-                    }
-                });
+                    });
+                }
+
+                row.add(view);
+
+                cellIndex++;
+            } else {
+                if(nameRow != undefined){
+                    var nameView = Ti.UI.createView({
+                        left : verticalPadding,
+                        right : verticalPadding,
+                        height : Ti.UI.SIZE,
+                        width : cellWidthAndHeight
+                    });
+                    
+                    nameView.add(cellName('', false));
+                    nameRow.add(nameView);
+                }
             }
-
-            row.add(view);
-
-            cellIndex++;
         }
 
         if(nameRow != undefined){
@@ -179,7 +192,31 @@ Alloy.Globals.setTable = (xGrid, yGrid, cellWidthAndHeight, horizontalPadding, d
     return tableData;
 };
 
-Alloy.Globals.cellImage = (cellWidthAndHeight, data) => {
+function addSelectionUIToView (view, col) {
+    view.add((col == 2) ? selectedBackgroundFor2Col : selectedBackgroundFor3Col);
+    view.add(selectedIconBackgroundVar);
+    view.add(selectedIconVar);
+
+    return view;
+}
+
+function cellName (data, hasText = true) {
+    return Ti.UI.createLabel({
+        bottom: (Ti.Platform.name === "android" ? 0 : -35),
+        font : {
+            fontSize : (Ti.Platform.name === "android" ? 20 : 22),
+            fontFamily : 'Roboto-Regular'
+        },
+        color : 'rgba(0, 0, 0, 0.87)',
+        text : (hasText ? data.name : ''),
+        textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
+        touchEnabled : false,
+        id : (hasText ? data.name : ''),
+        maxLines : 1
+    });
+}
+
+function cellImage (cellWidthAndHeight, data) {
     return Ti.UI.createImageView({
         image : data.logo,
         height : cellWidthAndHeight,
@@ -187,11 +224,12 @@ Alloy.Globals.cellImage = (cellWidthAndHeight, data) => {
         borderRadius : 4,
         borderWidth: 0,
         id : data.name,
-        touchEnabled : false
+        touchEnabled : false,
+        backgroundColor: 'rgb(255, 255, 255)'
     });
 };
 
-Alloy.Globals.selectedBackground = (cellWidthAndHeight, color) => {
+function selectedBackground (cellWidthAndHeight, color) {
     return Ti.UI.createLabel({
         width : cellWidthAndHeight,
         height : cellWidthAndHeight,
@@ -203,7 +241,7 @@ Alloy.Globals.selectedBackground = (cellWidthAndHeight, color) => {
     });
 };
 
-Alloy.Globals.selectedIconBackground = () => {
+function selectedIconBackground() {
     return Ti.UI.createLabel({
         width : (Ti.Platform.name === "android") ? 40 : 35,
         height : (Ti.Platform.name === "android") ? 40 : 35,
@@ -215,7 +253,7 @@ Alloy.Globals.selectedIconBackground = () => {
     });
 };
 
-Alloy.Globals.selectedIcon = () => {
+function selectedIcon () {
     return Ti.UI.createLabel({
         text : '✓',
         color : '#fff',
@@ -229,52 +267,77 @@ Alloy.Globals.selectedIcon = () => {
     });
 };
 
-var selectedBackground = Alloy.Globals.selectedBackground(Alloy.Globals.cellWidthAndHeight(2), 'rgba(101, 167, 209, 0.15)');
-var selectedIconBackground = Alloy.Globals.selectedIconBackground();
-var selectedIcon = Alloy.Globals.selectedIcon();
+var selectedBackgroundFor2Col = selectedBackground(Alloy.Globals.cellWidthAndHeight(2), 'rgba(101, 167, 209, 0.15)');
+var selectedBackgroundFor3Col = selectedBackground(Alloy.Globals.cellWidthAndHeight(3), 'rgba(255, 255, 255, 0.01)');
+var selectedIconBackgroundVar = selectedIconBackground();
+var selectedIconVar = selectedIcon();
 
-Alloy.Globals.selectOnlyOne = (e, data, cellWidthAndHeight, choice) => {
+Alloy.Globals.selectOnlyOne = (e, data, cellWidthAndHeight, col, choice) => {
     if(Ti.Platform.name === "android"){
         if(choice != null){
             var cellIndex = 0;
 
             for(var x = 0; x < e.section.rows.length; x++){
-                for (let y = 0; y < e.section.rows[x].children.length - 1; y++) {
+                for (var y = 0; y < e.section.rows[x].children.length - 1; y++) {
                     e.section.rows[x].children[y].removeAllChildren();
-                    e.section.rows[x].children[y].add(Alloy.Globals.cellImage(cellWidthAndHeight, data[cellIndex]));
+                    e.section.rows[x].children[y].add(cellImage(cellWidthAndHeight, data[cellIndex]));
                     cellIndex++;
                 }
             }
         }
 
         choice = e.source.id;
-
-        for(var x = 0; x < 2; x++){
-            for (let y = 0; y < 2; y++) {
+        
+        for(var x = 0; x < e.section.rows.length; x++){
+            for (var y = 0; y < e.section.rows[x].children.length - 1; y++) {
                 if(e.section.rows[x].children[y].id === choice){
-                    e.section.rows[x].children[y].add(selectedBackground);
-                    e.section.rows[x].children[y].add(selectedIconBackground);
-                    e.section.rows[x].children[y].add(selectedIcon);
+                    e.section.rows[x].children[y].add((col == 2) ? selectedBackgroundFor2Col : selectedBackgroundFor3Col);
+                    e.section.rows[x].children[y].add(selectedIconBackgroundVar);
+                    e.section.rows[x].children[y].add(selectedIconVar);
                 }
             }
         }
     } else {
         if(choice != null){
-            for(var x = 0; x < 2; x++){
-                for (let y = 0; y < 2; y++) {
-                    e.section.rows[x].children[y].remove(selectedBackground);
-                    e.section.rows[x].children[y].remove(selectedIconBackground);
-                    e.section.rows[x].children[y].remove(selectedIcon);
+            for(var x = 0; x < e.section.rows.length; x++){
+                for (var y = 0; y < e.section.rows[x].children.length - 1; y++) {
+                    e.section.rows[x].children[y].remove((col == 2) ? selectedBackgroundFor2Col : selectedBackgroundFor3Col);
+                    e.section.rows[x].children[y].remove(selectedIconBackgroundVar);
+                    e.section.rows[x].children[y].remove(selectedIconVar);
                 }
             }
         }
 
         choice = e.source.id;
 
-        e.source.add(selectedBackground);
-        e.source.add(selectedIconBackground);
-        e.source.add(selectedIcon);
+        e.source.add((col == 2) ? selectedBackgroundFor2Col : selectedBackgroundFor3Col);
+        e.source.add(selectedIconBackgroundVar);
+        e.source.add(selectedIconVar);
     }
 
     return choice;
+};
+
+Alloy.Globals.select = (e, data, cellWidthAndHeight, choices) => {
+    var cellIndex = 0;
+    for(var x = 0; x < e.section.rows.length; x++){
+        for (let y = 0; y < ((Ti.Platform.name === "android") ? e.section.rows[x].children.length - 1 : e.section.rows[x].children.length) ; y++) {
+            e.section.rows[x].children[y].removeAllChildren();
+            e.section.rows[x].children[y].add(cellImage(cellWidthAndHeight, data[cellIndex]));
+
+            if(Ti.Platform.name !== "android"){
+                e.section.rows[x].children[y].add(cellName(data[cellIndex]));
+            }
+            
+            choices.forEach(element => {
+                if(element === e.section.rows[x].children[y].id){
+                    e.section.rows[x].children[y].add(selectedBackground(cellWidthAndHeight, 'rgba(255, 255, 255, 0)'));
+                    e.section.rows[x].children[y].add(selectedIconBackground());
+                    e.section.rows[x].children[y].add(selectedIcon());
+                }
+            });
+
+            cellIndex++;
+        }
+    }        
 };

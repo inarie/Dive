@@ -1,4 +1,4 @@
-var teams = [
+var data = [
     { name : 'Monk seal', logo : 'http://wave-labs.org/api/image/dive/1' },
     { name : 'Seagrass', logo : 'http://wave-labs.org/api/image/dive/2' },
     { name : 'Seahorse', logo : 'http://wave-labs.org/api/image/dive/3' },
@@ -22,24 +22,28 @@ var teams = [
 var cellWidthAndHeight = Alloy.Globals.cellWidthAndHeight(3);
 
 $.index.addEventListener('focus', () => {
-    $.grid.setData(Alloy.Globals.setTable(3, 6, cellWidthAndHeight, 60, teams));
+    $.grid.setData(Alloy.Globals.setTable(3, Math.ceil(data.length / 3), cellWidthAndHeight, 60, data, '', true));
 
-    if(Alloy.Globals.data.length > 0){
-        $.nextBtn.opacity = 1;
-    }
+    if(Alloy.Globals.data.forEach(element => {
+        if(element.specie){
+            $.nextBtn.opacity = 1;
+        }
+    }));
 });
 
 
 $.grid.addEventListener('click', (e) => {
     if(e.source.id){
-        var dMain = Alloy.createController('speciesAmount', e.source.id).getView();
-        dMain.open();
+        var speciesAmount = Alloy.createController('speciesAmount', e.source.id).getView();
+        speciesAmount.open();
     }
 });
 
 $.nextBtn.addEventListener('click', () => {
-    /* var dMain = Alloy.createController('amountSpecies').getView();
-    dMain.open(); */
+    if($.nextBtn.opacity == 1){
+        var duration = Alloy.createController('duration').getView();
+        duration.open();
+    }
 });
 
 $.index.open();

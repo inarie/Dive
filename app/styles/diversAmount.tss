@@ -1,6 +1,35 @@
 '#leftView': {
 	layout: 'vertical',
-	width: '75%'
+	width: '50%'
+}
+
+'#center': {
+	layout: 'horizontal',
+	top : '5%',
+	bottom: '5%'	
+}
+
+'#center[platform=ios]': {
+	layout: 'horizontal',
+	top : '10%',
+	bottom: '10%'
+}
+
+'#backBtn': {
+	backgroundColor : 'transparent',
+	left: 40,
+	bottom: -5,
+	font: {
+		fontSize: 40,
+		fontFamily: 'Roboto-Medium'
+	},
+	width: Ti.UI.SIZE,
+    height: Ti.UI.SIZE,
+    color: '#194A8E',
+	title: '<',
+    borderRadius: 20,
+    borderWidth: 0,
+	opacity: 1
 }
 
 'TableView': {
@@ -9,14 +38,9 @@
 	backgroundColor: 'transparent',
 	separatorColor: 'transparent',
 	separatorStyle: Ti.UI.TABLE_VIEW_SEPARATOR_STYLE_NONE,
-	showVerticalScrollIndicator: true,
+	scrollable: false,
 	right : 30,
-	left : 30,
-	top : 0
-}
-
-'TableView[platform=ios]': {
-	scrollIndicatorStyle: Ti.UI.iOS.ScrollIndicatorStyle.BLACK
+	left : 30
 }
 
 'Button': {
@@ -37,6 +61,6 @@
 
 '#rightView': {
 	layout: 'vertical',
-	width: '25%',
+	width: '50%',
 	backgroundColor: 'rgb(0, 28, 96)'
 }
