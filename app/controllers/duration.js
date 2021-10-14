@@ -18,7 +18,11 @@ var data = [
 var cellWidthAndHeight = Alloy.Globals.cellWidthAndHeight(2);
 
 $.win.addEventListener('focus', () => {
-    $.grid.setData(Alloy.Globals.setTable(2, Math.ceil(data.length / 2), cellWidthAndHeight, 50, data));
+    if(Alloy.isHandheld){
+        $.grid.setData(Alloy.Globals.setTable(4, 1, cellWidthAndHeight, 50, data));
+    } else {
+        $.grid.setData(Alloy.Globals.setTable(2, Math.ceil(data.length / 2), cellWidthAndHeight, 50, data));
+    }
 
     if(Alloy.Globals.data.forEach(element => {
         if(element.duration){

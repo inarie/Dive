@@ -21,24 +21,40 @@ Alloy.Globals.cellWidthAndHeight = (columns) => {
     switch (columns) {
         case 2:
             if(Ti.Platform.name === "android"){
-                if(Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.5) - 82) / columns) < 200){
-                    cellWidthAndHeight = Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.5) - 82) / columns) - (Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.5) - 82) / columns) - 149);
-                }else{
-                    cellWidthAndHeight = Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.5) - 82) / columns) - (Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.5) - 82) / columns) - 229);
+                if(Alloy.isTablet){
+                    if(Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.5) - 82) / columns) < 200){
+                        cellWidthAndHeight = Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.5) - 82) / columns) - (Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.5) - 82) / columns) - 149);
+                    }else{
+                        cellWidthAndHeight = Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.5) - 82) / columns) - (Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.5) - 82) / columns) - 229);
+                    }
+                } else {
+                    cellWidthAndHeight = Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.75) - 194) / columns) - 195;
                 }
             } else {
-                cellWidthAndHeight = Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.5) - 82) / 2) - 50;
+                if(Alloy.isTablet){
+                    cellWidthAndHeight = Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.75) - 194) / columns) - 50;
+                } else {
+                    cellWidthAndHeight = Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.75) - 194) / columns) - 95;
+                }
             }
             break;
         case 3:
             if(Ti.Platform.name === "android"){
-                if(Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.75) - 194) / columns) - 145 < 100){
-                    cellWidthAndHeight = Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.75) - 194) / columns) - (Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.75) - 194) / columns) - 160);
-                }else{
-                    cellWidthAndHeight = Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.75) - 194) / columns) - (Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.75) - 194) / columns) - 240);
+                if(Alloy.isTablet){
+                    if(Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.75) - 194) / columns) - 145 < 100){
+                        cellWidthAndHeight = Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.75) - 194) / columns) - (Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.75) - 194) / columns) - 160);
+                    }else{
+                        cellWidthAndHeight = Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.75) - 194) / columns) - (Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.75) - 194) / columns) - 240);
+                    }
+                } else {
+                    cellWidthAndHeight = Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.75) - 194) / columns) - (Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.75) - 194) / columns) - 170);
                 }
             } else {
-                cellWidthAndHeight = Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.75) - 194) / columns) - 16;
+                if(Alloy.isTablet){
+                    cellWidthAndHeight = Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.75) - 194) / columns) - 16;
+                } else {
+                    cellWidthAndHeight = Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.75) - 194) / columns) + 44;
+                }
             }
             break;
         default:

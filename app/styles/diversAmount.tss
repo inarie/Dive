@@ -3,6 +3,11 @@
 	width: '50%'
 }
 
+"#leftView[formFactor=handheld]": {
+    layout: 'vertical',
+	width: '100%'
+},
+
 '#center': {
 	layout: 'horizontal',
 	top : '5%',
@@ -59,8 +64,30 @@
 	opacity: 0
 }
 
+'Button[formFactor=handheld]': {
+	bottom: 67,
+	font: {
+		fontSize: 20,
+		fontFamily: 'Roboto-Medium'
+	},
+	width: '10%',
+    height: '18%',
+	backgroundColor: '#194A8E',
+    color: 'white',
+	title: 'NEXT',
+    borderRadius: 20,
+    borderWidth: 0,
+	opacity: 0
+}
+
 '#rightView': {
 	layout: 'vertical',
 	width: '50%',
 	backgroundColor: 'rgb(0, 28, 96)'
 }
+
+"#rightView[formFactor=handheld]": {
+    layout: 'vertical',
+	width: '0%',
+	backgroundColor: 'rgb(0, 28, 96)'
+},
