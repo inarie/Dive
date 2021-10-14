@@ -18,47 +18,63 @@ Alloy.Globals.data = [];
 Alloy.Globals.cellWidthAndHeight = (columns) => {
     var cellWidthAndHeight = 0;
 
-    switch (columns) {
-        case 2:
-            if(Ti.Platform.name === "android"){
-                if(Alloy.isTablet){
-                    if(Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.5) - 82) / columns) < 200){
-                        cellWidthAndHeight = Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.5) - 82) / columns) - (Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.5) - 82) / columns) - 149);
-                    }else{
-                        cellWidthAndHeight = Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.5) - 82) / columns) - (Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.5) - 82) / columns) - 229);
-                    }
-                } else {
-                    cellWidthAndHeight = Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.75) - 194) / columns) - 195;
+    if(columns === 2){
+        if(Ti.Platform.name === "android"){
+            if(Alloy.isTablet){
+                if(Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.5) - 82) / 2) < 200){
+                    cellWidthAndHeight = Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.5) - 82) / 2) - (Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.5) - 82) / 2) - 149);
+                }else{
+                    cellWidthAndHeight = Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.5) - 82) / 2) - (Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.5) - 82) / 2) - 229);
                 }
             } else {
-                if(Alloy.isTablet){
-                    cellWidthAndHeight = Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.75) - 194) / columns) - 50;
-                } else {
-                    cellWidthAndHeight = Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.75) - 194) / columns) - 95;
+                if(Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.5) - 82) / 2) < 230){
+                    cellWidthAndHeight = Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.5) - 82) / 2) - 115;
+                } else{
+                    cellWidthAndHeight = Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.5) - 82) / 2) - 190;
                 }
             }
-            break;
-        case 3:
-            if(Ti.Platform.name === "android"){
-                if(Alloy.isTablet){
-                    if(Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.75) - 194) / columns) - 145 < 100){
-                        cellWidthAndHeight = Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.75) - 194) / columns) - (Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.75) - 194) / columns) - 160);
-                    }else{
-                        cellWidthAndHeight = Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.75) - 194) / columns) - (Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.75) - 194) / columns) - 240);
-                    }
-                } else {
-                    cellWidthAndHeight = Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.75) - 194) / columns) - (Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.75) - 194) / columns) - 170);
+        } else {
+            if(Alloy.isTablet){
+                cellWidthAndHeight = Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.5) - 82) / 2) - 50;
+            } else {
+                if(Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.5) - 82) / 2) < 145){
+                    cellWidthAndHeight = Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.5) - 82) / 2) - 35;
+                } else if(Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.5) - 82) / 2) > 145 && Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.5) - 82) / 2) < 165){
+                    cellWidthAndHeight = Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.5) - 82) / 2) - 44;
+                }else{
+                    cellWidthAndHeight = Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.5) - 82) / 2) - 43;
+                }
+            }
+        }
+    } else {
+        if(Ti.Platform.name === "android"){
+            if(Alloy.isTablet){
+                if(Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.75) - 194) / 3) - 145 < 100){
+                    cellWidthAndHeight = Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.75) - 194) / 3) - (Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.75) - 194) / 3) - 160);
+                }else{
+                    cellWidthAndHeight = Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.75) - 194) / 3) - (Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.75) - 194) / 3) - 240);
                 }
             } else {
-                if(Alloy.isTablet){
-                    cellWidthAndHeight = Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.75) - 194) / columns) - 16;
-                } else {
-                    cellWidthAndHeight = Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.75) - 194) / columns) + 44;
+                if(Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.75) - 194) / 3) - 145 < 100){
+                    cellWidthAndHeight = Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.75) - 194) / 3) - (Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.75) - 194) / 3) - 170);
+                }else{
+                    cellWidthAndHeight = Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.75) - 194) / 3) - (Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.75) - 194) / 3) - 190);
                 }
             }
-            break;
-        default:
-            break;
+        } else {
+            if(Alloy.isTablet){
+                cellWidthAndHeight = Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.75) - 194) / 3) - 16;
+            } else {
+                if(Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.75) - 194) / 3) < 120){
+                    cellWidthAndHeight = Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.75) - 194) / 3) + 40;
+                } else if(Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.75) - 194) / 3) > 120 && Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.75) - 194) / 3) < 140 ){
+                    cellWidthAndHeight = Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.75) - 194) / 3) + 35;
+                }
+                else{
+                    cellWidthAndHeight = Math.floor(((Ti.Platform.displayCaps.platformWidth * 0.75) - 194) / 3) + 44;
+                }
+            }
+        }
     }
 
     return cellWidthAndHeight;
@@ -151,7 +167,7 @@ Alloy.Globals.setTable = (xGrid, yGrid, cellWidthAndHeight, horizontalPadding, d
 
                 if(Alloy.Globals.data.length > 0){
                     Alloy.Globals.data.forEach(element => {
-                        if(xGrid != 2){
+                        if(xGrid != 2 && xGrid != 4){
                             if(element.specie === data[cellIndex].name){
                                 view.remove(imageSaturation);
                                 view.add(selectedBackground(cellWidthAndHeight, 'rgba(255, 255, 255, 0.01)'));
@@ -170,11 +186,11 @@ Alloy.Globals.setTable = (xGrid, yGrid, cellWidthAndHeight, horizontalPadding, d
                             }
                         }else{
                             if(element.amount === data[cellIndex].name && element.specie === arg) {
-                                view = addSelectionUIToView(view, xGrid);
+                                view = addSelectionUIToView(view, yGrid);
                             } else if(element.duration === data[cellIndex].name){
-                                view = addSelectionUIToView(view, xGrid);
+                                view = addSelectionUIToView(view, yGrid);
                             } else if(element.diversAmount === data[cellIndex].name){
-                                view = addSelectionUIToView(view, xGrid);
+                                view = addSelectionUIToView(view, yGrid);
                             }
                         }
                     });
@@ -209,7 +225,7 @@ Alloy.Globals.setTable = (xGrid, yGrid, cellWidthAndHeight, horizontalPadding, d
 };
 
 function addSelectionUIToView (view, col) {
-    view.add((col == 2) ? selectedBackgroundFor2Col : selectedBackgroundFor3Col);
+    view.add((col <= 2) ? selectedBackgroundFor2Col : selectedBackgroundFor3Col);
     view.add(selectedIconBackgroundVar);
     view.add(selectedIconVar);
 
@@ -307,7 +323,7 @@ Alloy.Globals.selectOnlyOne = (e, data, cellWidthAndHeight, col, choice) => {
         for(var x = 0; x < e.section.rows.length; x++){
             for (var y = 0; y < e.section.rows[x].children.length - 1; y++) {
                 if(e.section.rows[x].children[y].id === choice){
-                    e.section.rows[x].children[y].add((col == 2) ? selectedBackgroundFor2Col : selectedBackgroundFor3Col);
+                    e.section.rows[x].children[y].add((col <= 2) ? selectedBackgroundFor2Col : selectedBackgroundFor3Col);
                     e.section.rows[x].children[y].add(selectedIconBackgroundVar);
                     e.section.rows[x].children[y].add(selectedIconVar);
                 }
@@ -317,7 +333,7 @@ Alloy.Globals.selectOnlyOne = (e, data, cellWidthAndHeight, col, choice) => {
         if(choice != null){
             for(var x = 0; x < e.section.rows.length; x++){
                 for (var y = 0; y < e.section.rows[x].children.length - 1; y++) {
-                    e.section.rows[x].children[y].remove((col == 2) ? selectedBackgroundFor2Col : selectedBackgroundFor3Col);
+                    e.section.rows[x].children[y].remove((col <= 2) ? selectedBackgroundFor2Col : selectedBackgroundFor3Col);
                     e.section.rows[x].children[y].remove(selectedIconBackgroundVar);
                     e.section.rows[x].children[y].remove(selectedIconVar);
                 }
@@ -326,7 +342,7 @@ Alloy.Globals.selectOnlyOne = (e, data, cellWidthAndHeight, col, choice) => {
 
         choice = e.source.id;
 
-        e.source.add((col == 2) ? selectedBackgroundFor2Col : selectedBackgroundFor3Col);
+        e.source.add((col <= 2) ? selectedBackgroundFor2Col : selectedBackgroundFor3Col);
         e.source.add(selectedIconBackgroundVar);
         e.source.add(selectedIconVar);
     }
