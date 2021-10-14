@@ -65,7 +65,7 @@
 }
 
 'Button[formFactor=handheld]': {
-	bottom: 67,
+	bottom: 37,
 	font: {
 		fontSize: 20,
 		fontFamily: 'Roboto-Medium'

@@ -49,6 +49,15 @@ overrode the settings with other TSS, XML, or JS settings:
 	color: 'rgba(0, 0, 0, 0.87)'	
 }
 
+"#title[formFactor=handheld]": {
+    top: 37,
+	font: {
+		fontSize: 40,
+		fontFamily: 'Roboto-Regular'
+	},
+	color: 'rgba(0, 0, 0, 0.87)'
+},
+
 'ImageView': {
 	width: '100%',
 	height: '100%'

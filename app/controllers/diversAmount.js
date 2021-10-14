@@ -33,7 +33,7 @@ $.win.addEventListener('focus', () => {
 
 $.grid.addEventListener('click', (e) => {
     if(e.source.id){
-        diversAmount = Alloy.Globals.selectOnlyOne(e, data, cellWidthAndHeight, 2, diversAmount);
+        diversAmount = Alloy.Globals.selectOnlyOne(e, data, cellWidthAndHeight, 1, diversAmount);
         $.nextBtn.opacity = 1;
     }
 });
