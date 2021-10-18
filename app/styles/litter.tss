@@ -25,6 +25,23 @@
 	opacity: 1
 }
 
+'#skipBtn': {
+	backgroundColor : 'transparent',
+	right: 70,
+	bottom: 2,
+	font: {
+		fontSize: 20,
+		fontFamily: 'Roboto-Medium'
+	},
+	width: Ti.UI.SIZE,
+    height: Ti.UI.SIZE,
+    color: '#194A8E',
+	title: 'Skip >',
+    borderRadius: 20,
+    borderWidth: 0,
+	opacity: 1
+}
+
 'TableView': {
 	width: Ti.UI.FILL,
 	height: Ti.UI.SIZE,

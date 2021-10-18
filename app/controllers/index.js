@@ -24,25 +24,102 @@ var cellWidthAndHeight = Alloy.Globals.cellWidthAndHeight(3);
 $.index.addEventListener('focus', () => {
     $.grid.setData(Alloy.Globals.setTable(3, Math.ceil(data.length / 3), cellWidthAndHeight, 60, data, '', true));
 
-    if(Alloy.Globals.data.forEach(element => {
+    Alloy.Globals.data.forEach(element => {
         if(element.specie){
             $.nextBtn.opacity = 1;
+            $.skipBtn.opacity = 0;
         }
-    }));
+    });
 });
 
 
 $.grid.addEventListener('click', (e) => {
+    var hasData = false;
+
     if(e.source.id){
-        var speciesAmount = Alloy.createController('speciesAmount', e.source.id).getView();
-        speciesAmount.open();
+        Alloy.Globals.data.forEach(function(item, index, object) {
+            if(item.specie === e.source.id){
+                hasData = true;
+                object.splice(index, 1);
+            }
+        });
+
+        if(!hasData){
+            var speciesAmount = Alloy.createController('speciesAmount', e.source.id).getView();
+            speciesAmount.open({
+                activityEnterTransition: (Ti.Platform.Android) ? Titanium.UI.Android.SLIDE_RIGHT : Titanium.UI.iOS.AnimationStyle.FLIP_FROM_RIGHT,
+                activityExitTransition: (Ti.Platform.Android) ? Titanium.UI.Android.TRANSITION_EXPLODE : Titanium.UI.iOS.AnimationStyle.CROSS_DISSOLVE 
+            });
+        } else {
+            var cellIndex = 0;
+
+            for(var x = 0; x < e.section.rows.length; x++){
+                for (let y = 0; y < ((Ti.Platform.name === "android") ? e.section.rows[x].children.length - 1 : e.section.rows[x].children.length) ; y++) {
+
+                    if(e.section.rows[x].children[y].id === e.source.id){
+                        e.section.rows[x].children[y].removeAllChildren();
+                        e.section.rows[x].children[y].add(cellImage(cellWidthAndHeight, data[cellIndex]));
+                        e.section.rows[x].children[y].add(Ti.UI.createLabel({
+                            height : cellWidthAndHeight,
+                            width : cellWidthAndHeight,
+                            borderRadius : 4,
+                            borderWidth : 0,
+                            backgroundColor: 'rgba(255, 255, 255, 0.5)',
+                            id : data[cellIndex].name,
+                        }));
+            
+                        if(Ti.Platform.name !== "android"){
+                            e.section.rows[x].children[y].add(cellName(data[cellIndex]));
+                        }
+                    }
+
+                    cellIndex++;
+                }
+            }
+
+            $.nextBtn.opacity = 0;
+
+            var hasData = false;
+            Alloy.Globals.data.forEach(element => {
+                if(element.specie){
+                    hasData = true;
+                }
+            });
+    
+            if(!hasData)
+                $.skipBtn.opacity = 1;
+        }
     }
 });
 
 $.nextBtn.addEventListener('click', () => {
     if($.nextBtn.opacity == 1){
         var duration = Alloy.createController('duration').getView();
-        duration.open();
+        duration.open({
+            activityEnterTransition: (Ti.Platform.Android) ? Titanium.UI.Android.SLIDE_RIGHT : Titanium.UI.iOS.AnimationStyle.FLIP_FROM_RIGHT,
+            activityExitTransition: (Ti.Platform.Android) ? Titanium.UI.Android.TRANSITION_EXPLODE : Titanium.UI.iOS.AnimationStyle.CROSS_DISSOLVE 
+        });
+    }
+});
+
+$.skipBtn.addEventListener('click', () => {
+    var hasData = false;
+
+    if($.skipBtn.opacity == 1){
+        Alloy.Globals.data.forEach(element => {
+            if(element.specie){
+                hasData = true;
+            }
+        });
+
+        if(!hasData)
+            Alloy.Globals.data.push({ "specie" : null, "amount" : null });
+        
+        var duration = Alloy.createController('duration').getView();
+        duration.open({
+            activityEnterTransition: (Ti.Platform.Android) ? Titanium.UI.Android.SLIDE_RIGHT : Titanium.UI.iOS.AnimationStyle.FLIP_FROM_RIGHT,
+            activityExitTransition: (Ti.Platform.Android) ? Titanium.UI.Android.TRANSITION_EXPLODE : Titanium.UI.iOS.AnimationStyle.CROSS_DISSOLVE 
+        });
     }
 });
 

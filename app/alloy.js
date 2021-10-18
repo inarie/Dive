@@ -305,49 +305,25 @@ var selectedIconBackgroundVar = selectedIconBackground();
 var selectedIconVar = selectedIcon();
 
 Alloy.Globals.selectOnlyOne = (e, data, cellWidthAndHeight, col, choice) => {
-    if(Ti.Platform.name === "android"){
-        if(choice != null){
-            var cellIndex = 0;
+    var cellIndex = 0;
+    for(var x = 0; x < e.section.rows.length; x++){
+        for (let y = 0; y < ((Ti.Platform.name === "android") ? e.section.rows[x].children.length - 1 : e.section.rows[x].children.length) ; y++) {
+            e.section.rows[x].children[y].removeAllChildren();
+            e.section.rows[x].children[y].add(cellImage(cellWidthAndHeight, data[cellIndex]));
 
-            for(var x = 0; x < e.section.rows.length; x++){
-                for (var y = 0; y < e.section.rows[x].children.length - 1; y++) {
-                    e.section.rows[x].children[y].removeAllChildren();
-                    e.section.rows[x].children[y].add(cellImage(cellWidthAndHeight, data[cellIndex]));
-                    cellIndex++;
-                }
+            if(Ti.Platform.name !== "android"){
+                e.section.rows[x].children[y].add(cellName(data[cellIndex]));
             }
-        }
-
-        choice = e.source.id;
-        
-        for(var x = 0; x < e.section.rows.length; x++){
-            for (var y = 0; y < e.section.rows[x].children.length - 1; y++) {
-                if(e.section.rows[x].children[y].id === choice){
-                    e.section.rows[x].children[y].add((col <= 2) ? selectedBackgroundFor2Col : selectedBackgroundFor3Col);
-                    e.section.rows[x].children[y].add(selectedIconBackgroundVar);
-                    e.section.rows[x].children[y].add(selectedIconVar);
-                }
+            
+            if(choice === e.section.rows[x].children[y].id){
+                e.section.rows[x].children[y].add((col <= 2) ? selectedBackgroundFor2Col : selectedBackgroundFor3Col);
+                e.section.rows[x].children[y].add(selectedIconBackgroundVar);
+                e.section.rows[x].children[y].add(selectedIconVar);
             }
-        }
-    } else {
-        if(choice != null){
-            for(var x = 0; x < e.section.rows.length; x++){
-                for (var y = 0; y < e.section.rows[x].children.length - 1; y++) {
-                    e.section.rows[x].children[y].remove((col <= 2) ? selectedBackgroundFor2Col : selectedBackgroundFor3Col);
-                    e.section.rows[x].children[y].remove(selectedIconBackgroundVar);
-                    e.section.rows[x].children[y].remove(selectedIconVar);
-                }
-            }
-        }
 
-        choice = e.source.id;
-
-        e.source.add((col <= 2) ? selectedBackgroundFor2Col : selectedBackgroundFor3Col);
-        e.source.add(selectedIconBackgroundVar);
-        e.source.add(selectedIconVar);
+            cellIndex++;
+        }
     }
-
-    return choice;
 };
 
 Alloy.Globals.select = (e, data, cellWidthAndHeight, choices) => {

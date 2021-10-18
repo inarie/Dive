@@ -10,6 +10,7 @@
   <copyright>not specified</copyright>
   <icon>appicon.png</icon>
   <fullscreen>true</fullscreen>
+  <statusbar-hidden>true</statusbar-hidden>
   <navbar-hidden>true</navbar-hidden>
   <analytics>false</analytics>
   <guid>8f9e4ddf-3a23-486d-9000-fb8893aaef50</guid>

@@ -33,8 +33,15 @@ $.win.addEventListener('focus', () => {
 
 $.grid.addEventListener('click', (e) => {
     if(e.source.id){
-        duration = Alloy.Globals.selectOnlyOne(e, data, cellWidthAndHeight, 1, duration);
-        $.nextBtn.opacity = 1;
+        if(duration === e.source.id){
+            duration = null;
+            $.nextBtn.opacity = 0;
+        }else{
+            duration = e.source.id;
+            $.nextBtn.opacity = 1;
+        }
+
+        Alloy.Globals.selectOnlyOne(e, data, cellWidthAndHeight, 1, duration);  
     }
 });
 
@@ -61,6 +68,9 @@ $.nextBtn.addEventListener('click', () => {
         }
         
         var divingSpot = Alloy.createController('divingSpot').getView();
-        divingSpot.open();
+        divingSpot.open({
+            activityEnterTransition: (Ti.Platform.Android) ? Titanium.UI.Android.SLIDE_RIGHT : Titanium.UI.iOS.AnimationStyle.FLIP_FROM_RIGHT,
+            activityExitTransition: (Ti.Platform.Android) ? Titanium.UI.Android.TRANSITION_EXPLODE : Titanium.UI.iOS.AnimationStyle.CROSS_DISSOLVE 
+        });
     }
 });

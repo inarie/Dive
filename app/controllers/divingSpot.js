@@ -51,8 +51,15 @@ $.backBtn.addEventListener('click', () => {
 
 $.grid.addEventListener('click', (e) => {
     if(e.source.id){
-        divingSpot = Alloy.Globals.selectOnlyOne(e, data, cellWidthAndHeight, 3, divingSpot);
-        $.nextBtn.opacity = 1;
+        if(divingSpot === e.source.id){
+            divingSpot = null;
+            $.nextBtn.opacity = 0;
+        }else{
+            divingSpot = e.source.id;
+            $.nextBtn.opacity = 1;
+        }
+
+        Alloy.Globals.selectOnlyOne(e, data, cellWidthAndHeight, 3, divingSpot);  
     }
 });
 
@@ -75,6 +82,9 @@ $.nextBtn.addEventListener('click', () => {
         }
 
         var diversAmount = Alloy.createController('diversAmount').getView();
-        diversAmount.open();
+        diversAmount.open({
+            activityEnterTransition: (Ti.Platform.Android) ? Titanium.UI.Android.SLIDE_RIGHT : Titanium.UI.iOS.AnimationStyle.FLIP_FROM_RIGHT,
+            activityExitTransition: (Ti.Platform.Android) ? Titanium.UI.Android.TRANSITION_EXPLODE : Titanium.UI.iOS.AnimationStyle.CROSS_DISSOLVE 
+        });
     }
 });

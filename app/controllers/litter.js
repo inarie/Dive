@@ -17,11 +17,12 @@ var cellWidthAndHeight = Alloy.Globals.cellWidthAndHeight(3);
 $.win.addEventListener('focus', () => {
     $.grid.setData(Alloy.Globals.setTable(3, Math.ceil(data.length / 3), cellWidthAndHeight, 60, data, null, false));
 
-    if(Alloy.Globals.data.forEach(element => {
+    Alloy.Globals.data.forEach(element => {
         if(element.litter){
             $.nextBtn.opacity = 1;
+            $.skipBtn.opacity = 0;
         }
-    }));
+    });
 });
 
 $.backBtn.addEventListener('click', () => {
@@ -29,15 +30,77 @@ $.backBtn.addEventListener('click', () => {
 });
 
 $.grid.addEventListener('click', (e) => {
+    var hasData = false;
+
     if(e.source.id){
-        var litterType = Alloy.createController('litterType', e.source.id).getView();
-        litterType.open();
+        Alloy.Globals.data.forEach(function(item, index, object) {
+            if(item.litter === e.source.id){
+                hasData = true;
+                object.splice(index, 1);
+            }
+        });
+
+        if(!hasData){
+            var litterType = Alloy.createController('litterType', e.source.id).getView();
+            litterType.open({
+                activityEnterTransition: (Ti.Platform.Android) ? Titanium.UI.Android.SLIDE_RIGHT : Titanium.UI.iOS.AnimationStyle.FLIP_FROM_RIGHT,
+                activityExitTransition: (Ti.Platform.Android) ? Titanium.UI.Android.TRANSITION_EXPLODE : Titanium.UI.iOS.AnimationStyle.CROSS_DISSOLVE 
+            });
+        } else {
+            var cellIndex = 0;
+
+            for(var x = 0; x < e.section.rows.length; x++){
+                for (let y = 0; y < ((Ti.Platform.name === "android") ? e.section.rows[x].children.length - 1 : e.section.rows[x].children.length) ; y++) {
+
+                    if(e.section.rows[x].children[y].id === e.source.id){
+                        e.section.rows[x].children[y].removeAllChildren();
+                        e.section.rows[x].children[y].add(cellImage(cellWidthAndHeight, data[cellIndex]));
+            
+                        if(Ti.Platform.name !== "android"){
+                            e.section.rows[x].children[y].add(cellName(data[cellIndex]));
+                        }
+                    }
+
+                    cellIndex++;
+                }
+            }
+
+            $.nextBtn.opacity = 0;
+
+            var hasData = false;
+            Alloy.Globals.data.forEach(element => {
+                if(element.litter){
+                    hasData = true;
+                }
+            });
+    
+            if(!hasData)
+                $.skipBtn.opacity = 1;
+        }
     }
 });
 
 $.nextBtn.addEventListener('click', () => {
     if($.nextBtn.opacity == 1){
-        /* var duration = Alloy.createController('duration').getView();
-        duration.open(); */
+        /* var summary = Alloy.createController('summary').getView();
+        summary.open(); */
+    }
+});
+
+$.skipBtn.addEventListener('click', () => {
+    var hasData = false;
+
+    if($.skipBtn.opacity == 1){
+        Alloy.Globals.data.forEach(element => {
+            if(element.litter){
+                hasData = true;
+            }
+        });
+
+        if(!hasData)
+            Alloy.Globals.data.push({ "litter" : null, "litterType" : [] });
+
+        /* var summary = Alloy.createController('summary').getView();
+        summary.open(); */
     }
 });

@@ -4,6 +4,7 @@
 			<View id="leftTopView">
 				<Button id="backBtn"></Button>
 				<Label id="title">I've seen</Label>
+				<Button id="skipBtn"></Button>
 			</View>
 			<View id="leftBottomView">
 				<TableView id="grid"></TableView>

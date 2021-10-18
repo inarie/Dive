@@ -36,8 +36,15 @@ $.win.addEventListener('focus', () => {
 
 $.grid.addEventListener('click', (e) => {
     if(e.source.id){
-        choice = Alloy.Globals.selectOnlyOne(e, data, cellWidthAndHeight, 1, choice);
-        $.doneBtn.opacity = 1;
+        if(choice === e.source.id){
+            choice = null;
+            $.doneBtn.opacity = 0;
+        }else{
+            choice = e.source.id;
+            $.doneBtn.opacity = 1;
+        }
+
+        Alloy.Globals.selectOnlyOne(e, data, cellWidthAndHeight, 1, choice);            
     }
 });
 
