@@ -37,6 +37,11 @@
 	top : 0
 }
 
+'TableView[formFactor=handheld]': {
+	right : '3%',
+	left : '3%',
+}
+
 'TableView[platform=ios]': {
 	scrollIndicatorStyle: Ti.UI.iOS.ScrollIndicatorStyle.BLACK
 }
