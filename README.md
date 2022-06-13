@@ -1,5 +1,4 @@
-# Wave - Dive :ocean:
-
+# Wave - Dive Kiosk :ocean:
 
 
 ---
