@@ -1,6 +1,6 @@
 # Wave - Dive Kiosk :ocean:
 
-Redesign and implemention of a application related to marine biodiversity, and initial version was developed at [Wave Labs](http://wave.arditi.pt/).
+Redesign and implemention of a application related to marine biodiversity, the initial version was developed at [Wave Labs](http://wave.arditi.pt/).
 
 ---
 
